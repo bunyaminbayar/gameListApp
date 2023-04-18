@@ -7,14 +7,13 @@ import { BrowserRouter as Router, Switch, Route } from 'react-router-dom'
 import Login from './pages/login/Login';
 import MyLibrary from './pages/myLibrary/MyLibrary';
 import Register from './pages/register/Register';
-
+import MyStore from './pages/myStore/MyStore';
 
 function App() {
   const [username, setUsername] = useState('John');
-  const [tabs, setTabs] = useState('myLibrary');
 
   return (
-    <UserContext.Provider value={{ username, setUsername, tabs, setTabs }}>
+    <UserContext.Provider value={{ username, setUsername}}>
       <Router>
         <Topbar />
         <Switch>
@@ -27,8 +26,11 @@ function App() {
           <Route exact path="/register">
             <Register />
           </Route>
-          <Route exact path="/mylibrary">
+          <Route exact path="/myLibrary">
             <MyLibrary />
+          </Route>
+          <Route exact path="/myStore">
+            <MyStore />
           </Route>
         </Switch>
       </Router>

@@ -1,12 +1,11 @@
 import React from 'react';
 import { Link } from 'react-router-dom';
 import { Tabs, Tab } from '@mui/material';
-import GameList from '../myLibraryGameList/GameList';
 
-export default function MyLibrary() {
+export default function MyStore() {
     return (
         <>
-        <Tabs value="myLibrary">
+        <Tabs value="myStore">
             <Tab
                 value="myLibrary"
                 label={
@@ -24,7 +23,7 @@ export default function MyLibrary() {
                 }
             />
         </Tabs>
-        <GameList />
+        MyStore
         </>
     );
 }

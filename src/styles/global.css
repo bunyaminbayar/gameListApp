@@ -3,3 +3,11 @@
     padding: 0;
     box-sizing: border-box;
 }
+
+.clamp-3 {
+    display: -webkit-box;
+    -webkit-box-orient: vertical;
+    -webkit-line-clamp: 3;
+    overflow: hidden;
+    margin-bottom: 35px !important;
+  }
