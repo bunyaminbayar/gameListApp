@@ -9,5 +9,20 @@
     -webkit-box-orient: vertical;
     -webkit-line-clamp: 3;
     overflow: hidden;
-    margin-bottom: 35px !important;
-  }
+}
+
+.likesBadge {
+    display: block !important;
+    position: absolute !important;
+}
+
+.likesBadge span {
+    background-color: transparent;
+    background: transparent;
+    position: absolute;
+    text-align: center;
+    left: -23px;
+    right: auto;
+    top: 15px;
+    width: 40px;
+}

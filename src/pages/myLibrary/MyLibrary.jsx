@@ -24,7 +24,7 @@ export default function MyLibrary() {
                 }
             />
         </Tabs>
-        <GameList />
+        <GameList allGame={false} />
         </>
     );
 }

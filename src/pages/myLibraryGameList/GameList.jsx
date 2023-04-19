@@ -1,25 +1,45 @@
 import React, { useState, useEffect } from 'react';
-import { Box, Grid, TextField, Typography } from '@mui/material';
+import { Box, Grid, Typography, Button, Link } from '@mui/material';
 import axios from 'axios';
 import CategoryFilter from '../../components/categoryFilter/CategoryFilter';
+import GameItem from '../../components/gameItem/GameItem';
+import SearchBar from '../../components/searchBar/SearchBar';
 
-function GameList() {
+function GameList(props) {
   const [games, setGames] = useState([]);
   const [searchText, setSearchText] = useState('');
   const [selectedCategories, setSelectedCategories] = useState([]);
 
+
   useEffect(() => {
-    axios.get('data/simple_game_store_db.json').then((response) => {
-      setGames(response.data);
-    });
+    const savedGames = JSON.parse(localStorage.getItem('myGames'));
+    // then I print localstorage to update this data.
+    if (savedGames === null) {
+      axios.get('data/simple_game_store_db.json').then((response) => {
+        let filteredGames = response.data;
+        localStorage.setItem('myGames', JSON.stringify(filteredGames));
+        saveGame(filteredGames);
+      });
+
+    } else {
+      saveGame(savedGames)
+    }
+
+    function saveGame(filteredGames) {
+      if (!props.allGame) {
+        filteredGames = filteredGames.filter(game => game.Status === "Bought" || game.Status === "Shared");
+        filteredGames = filteredGames.sort((game1, game2) => game1.Name.localeCompare(game2.Name)); // sort the filtered games by Likes parameter in descending order
+      }
+      setGames(filteredGames);
+    }
   }, []);
 
   const filterGames = (game) => {
     return game.Name.toLowerCase().includes(searchText.toLowerCase()) && (selectedCategories.length === 0 || selectedCategories.some((category) => game.Categories.includes(category)));
   };
 
-  const handleSearchTextChange = (event) => {
-    setSearchText(event.target.value);
+  const handleSearchTextChange = (searchText) => {
+    setSearchText(searchText);
   };
 
   const handleCategoryChange = (categories) => {
@@ -33,37 +53,17 @@ function GameList() {
       <Grid p={2} container spacing={2}>
         <Grid item xs={12} md={10} sx={{ order: { xs: 2, md: 1 } }}>
           <Box pb={2} textAlign="center">
-            <TextField
-              fullWidth
-              id="search"
-              label="Search Games"
-              value={searchText}
-              onChange={handleSearchTextChange}
-              variant="outlined"
-            />
+            <SearchBar searchText={searchText} onSearchTextChange={handleSearchTextChange} />
           </Box>
           <Grid container spacing={2}>
             {games.filter(filterGames).map((game) => (
-              <Grid item xs={12} sm={6} md={4} key={game.Id}>
-                <Box display="flex" height="100%" border="1px solid #eee" sx={{ cursor: "pointer" }}>
-                  <Box display="flex" flexDirection="column" flexShrink={0} width="50%">
-                    <img src={game.Cover} style={{ width: '100%', height: '100%', objectFit: 'cover' }} alt={game.Cover} />
-                  </Box>
-                  <Box flexGrow={1} position="relative">
-                    <Typography ml={2} variant="h6" sx={{ fontWeight: "600" }}>{game.Name}</Typography>
-                    <Typography ml={2} variant="p" style={{ fontSize: "10px", fontWeight: "bold" }}>
-                      {game.Categories.join(" ")}
-                    </Typography>
-                    <Typography ml={2} variant="body1" className="clamp-3">{game.Summary}</Typography>
-                    <Box textAlign="center" position="absolute" bottom="0" bgcolor="black" color="white" p={1} width="100%"> Price : {game.Price}</Box>
-                  </Box>
-                </Box>
-              </Grid>
+              <GameItem key={game.Id} gameName={game.Name} gameCover={game.Cover} gameLikes={game.Likes} gameCategories={game.Categories} gameSummary={game.Summary} gamePrice={game.Price} gameStatus={game.Status} gameBuy={props.allGame ? true : false} />
             ))}
             {games.filter(filterGames).length === 0 && (
               <Grid item xs={12} >
                 <Box textAlign="center" mt={2}>
-                  <Typography variant="body1">No games found</Typography>
+                  {/** if it is on myLibrary page I create the following condition to redirect My store */}
+                  {props.allGame ? <Typography variant="body1">No games found</Typography> : <Link href='/myStore' ><Button variant="contained" color="primary">Go to Store</Button></Link>}
                 </Box>
               </Grid>
             )}

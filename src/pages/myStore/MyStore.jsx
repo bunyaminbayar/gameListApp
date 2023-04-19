@@ -1,6 +1,7 @@
 import React from 'react';
 import { Link } from 'react-router-dom';
 import { Tabs, Tab } from '@mui/material';
+import GameList from '../myLibraryGameList/GameList';
 
 export default function MyStore() {
     return (
@@ -23,7 +24,7 @@ export default function MyStore() {
                 }
             />
         </Tabs>
-        MyStore
+        <GameList allGame={true} />
         </>
     );
 }
