@@ -14,14 +14,17 @@ function GameList(props) {
   useEffect(() => {
     const savedGames = JSON.parse(localStorage.getItem('myGames'));
     // then I save localstorage to update this data.
-     setAllGames(savedGames);
+    setAllGames(savedGames);
     if (savedGames === null) {
       axios.get('data/simple_game_store_db.json').then((response) => {
         let filteredGames = response.data;
         localStorage.setItem('myGames', JSON.stringify(response.data));
         saveGame(filteredGames);
+        //
+        if (allGames === null || allGames === []) {
+          setAllGames(response.data)
+        }
       });
-
     } else {
       saveGame(savedGames)
     }
@@ -58,7 +61,7 @@ function GameList(props) {
           </Box>
           <Grid container spacing={2}>
             {games.filter(filterGames).map((game) => (
-              <GameItem key={game.Id} gameId={game.Id} gameName={game.Name} gameCover={game.Cover} gameLikes={game.Likes} gameCategories={game.Categories} gameSummary={game.Summary} gamePrice={game.Price} gameStatus={game.Status} games={games} setGames={setGames} allGames={allGames} setAllGames={setAllGames} gameBuy={props.allGame ? true : false} />
+              <GameItem key={game.Id} gameId={game.Id} gameName={game.Name} gameCover={game.Cover} gameLikes={game.Likes} gameLikesStatus={game.LikesStatus} gameCategories={game.Categories} gameSummary={game.Summary} gamePrice={game.Price} gameStatus={game.Status} games={games} setGames={setGames} allGames={allGames} setAllGames={setAllGames} gameBuy={props.allGame ? true : false} />
             ))}
             {games.filter(filterGames).length === 0 && (
               <Grid item xs={12} >
