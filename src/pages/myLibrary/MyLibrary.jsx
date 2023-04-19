@@ -1,9 +1,14 @@
-import React from 'react';
+import { useContext } from 'react';
 import { Link } from 'react-router-dom';
 import { Tabs, Tab } from '@mui/material';
 import GameList from '../../components/gameList/GameList';
+import LanguageContext from '../../context/LanguageContext';
 
 export default function MyLibrary() {
+
+    // Global Language
+    const { language } = useContext(LanguageContext);
+
     return (
         <>
         <Tabs value="myLibrary">
@@ -11,7 +16,7 @@ export default function MyLibrary() {
                 value="myLibrary"
                 label={
                     <Link to="/myLibrary" style={{ textDecoration: 'none', color: 'inherit' }}>
-                        My Library
+                        {language === "en" ? "My Library" : "Kütüphanem"}
                     </Link>
                 }
             />
@@ -19,11 +24,12 @@ export default function MyLibrary() {
                 value="myStore"
                 label={
                     <Link to="/myStore" style={{ textDecoration: 'none', color: 'inherit' }}>
-                        My Store
+                       {language === "en" ? "My Store" : "Mağazam"}
                     </Link>
                 }
             />
         </Tabs>
+        {/** fetch games that the user bought or shared  */}
         <GameList allGame={false} />
         </>
     );

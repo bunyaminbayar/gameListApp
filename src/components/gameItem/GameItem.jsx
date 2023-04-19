@@ -1,12 +1,15 @@
-import { useState } from 'react';
+import { useContext } from 'react';
 import { Box, Grid, Typography, Badge, Button } from '@mui/material';
 import FavoriteIcon from '@mui/icons-material/Favorite';
+import LanguageContext from '../../context/LanguageContext';
 
+// Game Card
 export default function GameItem(props) {
 
-    const [likes, setLikes] = useState(props.gameLikes);
-    const [liked, setLiked] = useState(false);
+    // Global language
+    const { language } = useContext(LanguageContext);
 
+    // Buy now function
     const handleBuyNow = (e) => {
         const gameId = e.target.value;
         const updatedGames = props.allGames.map(game => {
@@ -19,10 +22,12 @@ export default function GameItem(props) {
                 return game;
             }
         });
+        // Update localStroge
         localStorage.setItem('myGames', JSON.stringify(updatedGames));
         props.setAllGames(updatedGames);
     };
 
+    // Likes function
     const handleUserLikes = (e) => {
         const gameId = e.currentTarget.getAttribute("dataid");
         console.log(gameId);
@@ -37,6 +42,7 @@ export default function GameItem(props) {
                 return game;
             }
         });
+        // Update localstroge
         localStorage.setItem('myGames', JSON.stringify(updatedGames));
         props.setAllGames(updatedGames);
     };
@@ -58,14 +64,14 @@ export default function GameItem(props) {
                     <Typography ml={2} variant="body1" className="clamp-3">{props.gameSummary}</Typography>
                     {props.gameStatus === null ?
                         <Box pt={2} textAlign="center">
-                            <Button value={props.gameId} bgcolor="#000" variant="contained" onClick={handleBuyNow}>Buy Now</Button>
+                            <Button value={props.gameId} bgcolor="#000" variant="contained" onClick={handleBuyNow}>{language === "en" ? "Buy Now" : "Satın al"}</Button>
                         </Box>
                         :
                         <Box pt={2} textAlign="center">
-                            <Button value={props.gameId} bgcolor="#000" variant="contained" onClick={handleBuyNow}>Remove</Button>
+                            <Button value={props.gameId} bgcolor="#000" variant="contained" onClick={handleBuyNow}>{language === "en" ? "Remove" : "Kaldır"}</Button>
                         </Box>
                     }
-                    <Box textAlign="center" position="absolute" bottom="0" bgcolor="black" color="white" p={1} width="100%"> Price : {props.gamePrice}</Box>
+                    <Box textAlign="center" position="absolute" bottom="0" bgcolor="black" color="white" p={1} width="100%">{language === "en" ? "Price" : "Fiyat"} : {props.gamePrice}</Box>
                 </Box>
             </Box>
         </Grid>

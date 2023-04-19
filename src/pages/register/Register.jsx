@@ -1,4 +1,4 @@
-import React, { useState } from "react";
+import React, { useState, useContext } from "react";
 import {
     TextField,
     Button,
@@ -9,6 +9,7 @@ import {
     Typography,
 } from "@mui/material";
 import { useHistory } from "react-router-dom/cjs/react-router-dom.min";
+import LanguageContext from "../../context/LanguageContext";
 
 
 const Register = () => {
@@ -16,6 +17,8 @@ const Register = () => {
     const [password, setPassword] = useState("");
     const [confirmPassword, setConfirmPassword] = useState("");
     const history = useHistory();
+    // Global Language
+    const { language } = useContext(LanguageContext);
 
     const handleSubmit = (e) => {
         e.preventDefault();
@@ -41,7 +44,7 @@ const Register = () => {
             <Container maxWidth="sm" sx={{ my: 4 }}>
                 <Paper sx={{ p: 3 }}>
                     <Grid item xs={12}>
-                        <Typography mb={2} textAlign="center" variant="h4">Register</Typography>
+                        <Typography mb={2} textAlign="center" variant="h4">{language === "en" ? "Register" : "Kayıt Ol"}</Typography>
                     </Grid>
                     <Grid item xs={12}>
                         <form onSubmit={handleSubmit}>
@@ -49,7 +52,7 @@ const Register = () => {
                                 <Grid item xs={12}>
                                     <TextField
                                         type="email"
-                                        label="Email"
+                                        label={language === "en" ? "Email" : "E-posta"}
                                         variant="outlined"
                                         fullWidth
                                         required
@@ -62,7 +65,7 @@ const Register = () => {
                                 <Grid item xs={12}>
                                     <TextField
                                         type="password"
-                                        label="Password"
+                                        label={language === "en" ? "Password" : "Şifre"}
                                         variant="outlined"
                                         fullWidth
                                         required
@@ -73,15 +76,15 @@ const Register = () => {
                                     />
                                     <TextField
                                     sx={{ mt: 3 }}
-                                        type="password"
-                                        label="Confirm Password"
+                                        type="password" 
+                                        label={language === "en" ? "Confirm Password" : "Şifreyi Onayla"}
                                         variant="outlined"
                                         fullWidth
                                         required
                                         value={confirmPassword}
                                         onChange={(e) => setConfirmPassword(e.target.value)}
                                         error={confirmPassword.length > 0 && password !== confirmPassword}
-                                        helperText={confirmPassword.length > 0 && password !== confirmPassword ? "Passwords do not match" : ""}
+                                        helperText={confirmPassword.length > 0 && password !== confirmPassword ? language === "en" ? "Passwords do not match" : "Şifre eşleşmedi" : ""}
                                     />
 
                                     <Button
@@ -94,7 +97,7 @@ const Register = () => {
                                         disabled={!isFormValid()}
                                         onClick={() => history.push("/login")}
                                     >
-                                        Register
+                                        {language === "en" ? "Register" : "Kayıt Ol"}
                                     </Button>
                                     <Button
                                         fullWidth
@@ -102,7 +105,7 @@ const Register = () => {
                                         variant="contained"
                                         onClick={() => history.push("/login")}
                                     >
-                                        Cancel
+                                        {language === "en" ? "Cancel" : "İptal"}
                                     </Button>
                                 </Grid>
                             </Grid>

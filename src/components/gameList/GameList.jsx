@@ -1,26 +1,31 @@
-import React, { useState, useEffect } from 'react';
+import React, { useState, useEffect, useContext } from 'react';
 import { Box, Grid, Typography, Button, Link } from '@mui/material';
 import axios from 'axios';
 import CategoryFilter from '../categoryFilter/CategoryFilter';
 import GameItem from '../gameItem/GameItem';
 import SearchBar from '../searchBar/SearchBar';
+import LanguageContext from '../../context/LanguageContext';
 
+// Game list container
 function GameList(props) {
   const [games, setGames] = useState([]);
   const [searchText, setSearchText] = useState('');
   const [selectedCategories, setSelectedCategories] = useState([]);
   const [allGames, setAllGames] = useState([]);
+  // Global language
+  const { language } = useContext(LanguageContext);
 
   useEffect(() => {
     const savedGames = JSON.parse(localStorage.getItem('myGames'));
     // then I save localstorage to update this data.
     setAllGames(savedGames);
+    // If localStorage is empty, immediately match the data from the Json. If full, continue to use.
     if (savedGames === null) {
       axios.get('data/simple_game_store_db.json').then((response) => {
         let filteredGames = response.data;
         localStorage.setItem('myGames', JSON.stringify(response.data));
         saveGame(filteredGames);
-        //
+        // just in case if the setAllGames value is empty.
         if (allGames === null || allGames === []) {
           setAllGames(response.data)
         }
@@ -29,6 +34,7 @@ function GameList(props) {
       saveGame(savedGames)
     }
 
+    // Since the game listing container is the same, Filter all games or games owned by the user. Also change the order.
     function saveGame(filteredGames) {
       if (!props.allGame) {
         filteredGames = filteredGames.filter(game => game.Status === "Bought" || game.Status === "Shared");
@@ -38,6 +44,7 @@ function GameList(props) {
     }
   }, [allGames]);
 
+  // Filter games by search box or by category filtering
   const filterGames = (game) => {
     return game.Name.toLowerCase().includes(searchText.toLowerCase()) && (selectedCategories.length === 0 || selectedCategories.some((category) => game.Categories.includes(category)));
   };
@@ -50,6 +57,7 @@ function GameList(props) {
     setSelectedCategories(categories);
   };
 
+  // Dynamically retrieve categories in games list
   const categories = [...new Set(games.flatMap((game) => game.Categories))];
 
   return (
@@ -67,7 +75,7 @@ function GameList(props) {
               <Grid item xs={12} >
                 <Box textAlign="center" mt={2}>
                   {/** if it is on myLibrary page I create the following condition to redirect My store */}
-                  {props.allGame ? <Typography variant="body1">No games found</Typography> : <Link href='/myStore' ><Button variant="contained" color="primary">Go to Store</Button></Link>}
+                  {props.allGame ? <Typography variant="body1">{language === "en" ? "No games found" : "Oyun Bulunamadı"}</Typography> : <Link href='/myStore' ><Button variant="contained" color="primary">{language === "en" ? "Go to Store" : "Mağazaya Git"}</Button></Link>}
                 </Box>
               </Grid>
             )}

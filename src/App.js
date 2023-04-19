@@ -1,24 +1,26 @@
 import React, { useState } from 'react';
-import Topbar from './components/topbar/Topbar';
-import UserContext from './context/UserContext';
-import UserUpdate from './components/userUpdate/UserUpdate';
 import './styles/global.css';
+import Topbar from './components/topbar/Topbar';
+import LanguageContext from './context/LanguageContext';
 import { BrowserRouter as Router, Switch, Route } from 'react-router-dom'
 import Login from './pages/login/Login';
 import MyLibrary from './pages/myLibrary/MyLibrary';
 import Register from './pages/register/Register';
 import MyStore from './pages/myStore/MyStore';
+import Footer from './components/footer/Footer';
 
 function App() {
-  const [username, setUsername] = useState('John');
+
+  // set default global language.
+  const [language, setLanguage] = useState('en');
 
   return (
-    <UserContext.Provider value={{ username, setUsername}}>
+    <LanguageContext.Provider value={{ language, setLanguage}}>
       <Router>
         <Topbar />
         <Switch>
           <Route exact path="/">
-            <UserUpdate />
+            
           </Route>
           <Route exact path="/login">
             <Login />
@@ -33,8 +35,9 @@ function App() {
             <MyStore />
           </Route>
         </Switch>
+        <Footer />
       </Router>
-    </UserContext.Provider>
+    </LanguageContext.Provider>
   );
 }
 

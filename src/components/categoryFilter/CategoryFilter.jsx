@@ -1,7 +1,12 @@
-import React from 'react';
+import { useContext } from 'react';
 import { Box, Checkbox, FormControlLabel, FormGroup, Typography } from '@mui/material';
+import LanguageContext from '../../context/LanguageContext';
 
 function CategoryFilter({ categories, selectedCategories, onCategoryChange }) {
+
+  const { language } = useContext(LanguageContext);
+
+  // Get category name values from data dynamically
   const handleCategoryChange = (event) => {
     const { name } = event.target;
     if (selectedCategories.includes(name)) {
@@ -13,7 +18,7 @@ function CategoryFilter({ categories, selectedCategories, onCategoryChange }) {
 
   return (
     <Box>
-      <Typography variant="h6">Categories</Typography>
+      <Typography variant="h6">{language === "en" ? "Categories" : "Kategori"}</Typography>
       <FormGroup>
         {categories.map((category) => (
           <FormControlLabel

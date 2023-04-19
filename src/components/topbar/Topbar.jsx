@@ -1,17 +1,17 @@
-import React, {useContext} from 'react';
+import React, { useContext } from 'react';
 import MenuIcon from '@mui/icons-material/Menu';
-import UserContext from '../../context/UserContext';
+import LanguageContext from '../../context/LanguageContext';
 import {
-    Button,
-    Box,
-    Typography,
-    AppBar,
-    Toolbar,
-    IconButton,
+  Button,
+  Box,
+  Typography,
+  AppBar,
+  Toolbar,
+  IconButton,
 } from "@mui/material";
 
 export default function Topbar() {
-    const { username } = useContext(UserContext);
+  const { language } = useContext(LanguageContext);
   return (
     <Box sx={{ flexGrow: 1 }}>
       <AppBar position="static">
@@ -26,9 +26,8 @@ export default function Topbar() {
             <MenuIcon />
           </IconButton>
           <Typography variant="h6" component="div" sx={{ flexGrow: 1 }}>
-            News {username}
+            {language === "en" ? "English" : "Türkçe"}
           </Typography>
-          <Button color="inherit">Login</Button>
         </Toolbar>
       </AppBar>
     </Box>
