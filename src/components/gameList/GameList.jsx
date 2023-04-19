@@ -1,23 +1,24 @@
 import React, { useState, useEffect } from 'react';
 import { Box, Grid, Typography, Button, Link } from '@mui/material';
 import axios from 'axios';
-import CategoryFilter from '../../components/categoryFilter/CategoryFilter';
-import GameItem from '../../components/gameItem/GameItem';
-import SearchBar from '../../components/searchBar/SearchBar';
+import CategoryFilter from '../categoryFilter/CategoryFilter';
+import GameItem from '../gameItem/GameItem';
+import SearchBar from '../searchBar/SearchBar';
 
 function GameList(props) {
   const [games, setGames] = useState([]);
   const [searchText, setSearchText] = useState('');
   const [selectedCategories, setSelectedCategories] = useState([]);
-
+  const [allGames, setAllGames] = useState([]);
 
   useEffect(() => {
     const savedGames = JSON.parse(localStorage.getItem('myGames'));
-    // then I print localstorage to update this data.
+    // then I save localstorage to update this data.
+     setAllGames(savedGames);
     if (savedGames === null) {
       axios.get('data/simple_game_store_db.json').then((response) => {
         let filteredGames = response.data;
-        localStorage.setItem('myGames', JSON.stringify(filteredGames));
+        localStorage.setItem('myGames', JSON.stringify(response.data));
         saveGame(filteredGames);
       });
 
@@ -32,7 +33,7 @@ function GameList(props) {
       }
       setGames(filteredGames);
     }
-  }, []);
+  }, [allGames]);
 
   const filterGames = (game) => {
     return game.Name.toLowerCase().includes(searchText.toLowerCase()) && (selectedCategories.length === 0 || selectedCategories.some((category) => game.Categories.includes(category)));
@@ -57,7 +58,7 @@ function GameList(props) {
           </Box>
           <Grid container spacing={2}>
             {games.filter(filterGames).map((game) => (
-              <GameItem key={game.Id} gameName={game.Name} gameCover={game.Cover} gameLikes={game.Likes} gameCategories={game.Categories} gameSummary={game.Summary} gamePrice={game.Price} gameStatus={game.Status} gameBuy={props.allGame ? true : false} />
+              <GameItem key={game.Id} gameId={game.Id} gameName={game.Name} gameCover={game.Cover} gameLikes={game.Likes} gameCategories={game.Categories} gameSummary={game.Summary} gamePrice={game.Price} gameStatus={game.Status} games={games} setGames={setGames} allGames={allGames} setAllGames={setAllGames} gameBuy={props.allGame ? true : false} />
             ))}
             {games.filter(filterGames).length === 0 && (
               <Grid item xs={12} >

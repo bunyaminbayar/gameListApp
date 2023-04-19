@@ -1,7 +1,7 @@
 import React from 'react';
 import { Link } from 'react-router-dom';
 import { Tabs, Tab } from '@mui/material';
-import GameList from '../myLibraryGameList/GameList';
+import GameList from '../../components/gameList/GameList';
 
 export default function MyStore() {
     return (
