@@ -8,6 +8,7 @@ import MyLibrary from './pages/myLibrary/MyLibrary';
 import Register from './pages/register/Register';
 import MyStore from './pages/myStore/MyStore';
 import Footer from './components/footer/Footer';
+import Home from './pages/home/Home';
 
 function App() {
 
@@ -20,7 +21,7 @@ function App() {
         <Topbar />
         <Switch>
           <Route exact path="/">
-            
+            <Home />
           </Route>
           <Route exact path="/login">
             <Login />

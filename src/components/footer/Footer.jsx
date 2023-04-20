@@ -1,7 +1,6 @@
 import { useState, useContext } from 'react';
-import Box from '@mui/material/Box';
-import TextField from '@mui/material/TextField';
-import MenuItem from '@mui/material/MenuItem';
+import { Link } from '@mui/material';
+import { Button, Box, TextField, MenuItem } from '@mui/material';
 import LanguageContext from '../../context/LanguageContext';
 
 // Change language
@@ -49,6 +48,10 @@ export default function Footer() {
                     ))}
                 </TextField>
             </div>
+            <Link href='login'><Button>Login</Button></Link>
+            <Link href='register'><Button>Register</Button></Link>
+            <Link href='myLibrary'><Button>My Library</Button></Link>
+            <Link href='myStore'><Button>My Store</Button></Link>
         </Box>
     );
 }

@@ -30,7 +30,6 @@ export default function GameItem(props) {
     // Likes function
     const handleUserLikes = (e) => {
         const gameId = e.currentTarget.getAttribute("dataid");
-        console.log(gameId);
         const updatedGames = props.allGames.map(game => {
             if (game.Id == gameId) {
                 return {
